@@ -17,7 +17,6 @@
   width: 10rem;
   height: 5rem;
   text-align: center;
-  font-size: 0.2133rem;
+  font-size: .213333rem;
 }
 </style>
-
