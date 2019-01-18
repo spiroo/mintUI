@@ -6,5 +6,18 @@
       </router-link>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
+    <div class="fontTest">
+      字体测试
+    </div>
   </div>
 </template>
+
+<style lang="less" scoped>
+.fontTest {
+  width: 10rem;
+  height: 5rem;
+  text-align: center;
+  font-size: 0.2133rem;
+}
+</style>
+
