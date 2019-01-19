@@ -12,6 +12,28 @@
   </div>
 </template>
 
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'About',
+  computed: {
+    ...mapGetters([
+      'userList'
+    ])
+  },
+  created() {
+    this.loading = true
+    this.$store.dispatch('getUsers').then(() => {
+      this.loading = false
+      // this.$router.push({ path: this.redirect || '/' })
+    }).catch(() => {
+      this.loading = false
+    })
+  }
+};
+</script>
+
 <style lang="less" scoped>
 .fontTest {
   width: 10rem;
