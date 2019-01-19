@@ -1,10 +1,10 @@
 module.exports = {
-  presets: ["@vue/app"],
+  presets: ['@vue/app'],
   plugins: [
     [
-      "component",
+      'component',
       {
-        libraryName: "mint-ui",
+        libraryName: 'mint-ui',
         style: true
       }
     ]

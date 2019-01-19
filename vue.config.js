@@ -1,11 +1,15 @@
-const path = require("path");
+const path = require('path');
+
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 
 module.exports = {
-  baseUrl: process.env.NODE_ENV === "production" ? "//your_url" : "/",
+  baseUrl: process.env.NODE_ENV === 'production' ? '//your_url' : '/',
 
-  outputDir: "dist",
+  outputDir: 'dist',
 
-  assetsDir: "static",
+  assetsDir: 'static',
 
   filenameHashing: true,
 
@@ -15,23 +19,23 @@ module.exports = {
   pages: {
     index: {
       // page 的入口
-      entry: "src/main.js",
+      entry: 'src/main.js',
       // 模板来源
-      template: "public/index.html",
+      template: 'public/index.html',
       // 在 dist/index.html 的输出
-      filename: "index.html",
+      filename: 'index.html',
       // 当使用 title 选项时，
       // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-      title: "Index Page",
+      title: 'Index Page',
       // 在这个页面中包含的块，默认情况下会包含
       // 提取出来的通用 chunk 和 vendor chunk。
-      chunks: ["chunk-vendors", "chunk-common", "index"]
+      chunks: ['chunk-vendors', 'chunk-common', 'index']
     },
     // 当使用只有入口的字符串格式时，
     // 模板会被推导为 `public/subpage.html`
     // 并且如果找不到的话，就回退到 `public/index.html`。
     // 输出文件名会被推导为 `subpage.html`。
-    // subpage: "src/subpage/main.js"
+    // subpage: 'src/subpage/main.js'
   },
 
   // eslint-loader 是否在保存的时候检查
@@ -51,20 +55,20 @@ module.exports = {
   // webpack 配置，键值对象时会合并配置，为方法时会改写配置
   // https://cli.vuejs.org/guide/webpack.html#simple-configuration
   configureWebpack: config => {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
-      config.mode = "production";
+      config.mode = 'production';
     } else {
       // 为开发环境修改配置...
-      config.mode = "development";
+      config.mode = 'development';
     }
 
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
         alias: {
-          "@": path.resolve(__dirname, "./src"),
-          "@c": path.resolve(__dirname, "./src/components")
+          '@': path.resolve(__dirname, './src'),
+          '@c': path.resolve(__dirname, './src/components')
         }
       }
     });
@@ -80,9 +84,22 @@ module.exports = {
 
     // 'src/lib' 目录下为外部库文件，不参与 eslint 检测
     config.module
-      .rule("eslint")
-      .exclude.add("/Users/maybexia/Downloads/FE/community_built-in/src/lib")
+      .rule('eslint')
+      .exclude.add('/Users/maybexia/Downloads/FE/community_built-in/src/lib')
       .end();
+
+    config.resolve.alias.set('@', resolve('src'));
+    config.module.rules.delete('svg');
+    config.module
+      .rule('svg-smart')
+      .test(/\.svg$/)
+      .include.add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      });
   },
 
   // 配置高于chainWebpack中关于 css loader 的配置
@@ -113,7 +130,7 @@ module.exports = {
   devServer: {
     open: true,
 
-    // host: "localhost",
+    // host: 'localhost',
 
     port: 9521,
 
@@ -136,7 +153,7 @@ module.exports = {
     before: app => {}
   },
   // 构建时开启多进程处理 babel 编译
-  parallel: require("os").cpus().length > 1,
+  parallel: require('os').cpus().length > 1,
 
   // https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {},
