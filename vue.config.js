@@ -30,7 +30,7 @@ module.exports = {
       // 在这个页面中包含的块，默认情况下会包含
       // 提取出来的通用 chunk 和 vendor chunk。
       chunks: ['chunk-vendors', 'chunk-common', 'index']
-    },
+    }
     // 当使用只有入口的字符串格式时，
     // 模板会被推导为 `public/subpage.html`
     // 并且如果找不到的话，就回退到 `public/index.html`。
@@ -78,9 +78,9 @@ module.exports = {
   // https://github.com/mozilla-neutrino/webpack-chain
   chainWebpack: config => {
     // 因为是多页面，所以取消 chunks，每个页面只对应一个单独的 JS / CSS
-    config.optimization.splitChunks({
-      cacheGroups: {}
-    });
+    // config.optimization.splitChunks({
+    //   cacheGroups: {}
+    // });
 
     // 'src/lib' 目录下为外部库文件，不参与 eslint 检测
     config.module
@@ -88,18 +88,23 @@ module.exports = {
       .exclude.add('/Users/maybexia/Downloads/FE/community_built-in/src/lib')
       .end();
 
-    config.resolve.alias.set('@', resolve('src'));
-    config.module.rules.delete('svg');
-    config.module
-      .rule('svg-smart')
+    // svg loader
+    const svgRule = config.module.rule('svg'); // 找到svg-loader
+    svgRule.uses.clear(); // 清除已有的loader, 如果不这样做会添加在此loader之后
+    svgRule.exclude.add(/node_modules/); // 正则匹配排除node_modules目录
+    // 添加svg新的loader处理
+    svgRule
       .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
-      .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]'
       });
+
+    // 修改images loader 添加svg处理
+    const imagesRule = config.module.rule('images');
+    imagesRule.exclude.add(resolve('src/icons'));
+    config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/);
   },
 
   // 配置高于chainWebpack中关于 css loader 的配置
