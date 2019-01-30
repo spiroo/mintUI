@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'About',
@@ -23,13 +23,13 @@ export default {
     ])
   },
   created() {
-    this.loading = true
-    this.$store.dispatch('getUsers').then(() => {
-      this.loading = false
-      // this.$router.push({ path: this.redirect || '/' })
-    }).catch(() => {
-      this.loading = false
-    })
+    this.$store
+      .dispatch('getUsers')
+      .then(() => {
+        // this.$router.push({ path: this.redirect || '/' })
+      }).catch((err) => {
+        console.log('err = ', err);
+      });
   }
 };
 </script>

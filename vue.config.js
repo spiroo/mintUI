@@ -1,7 +1,7 @@
 const path = require('path');
 
 function resolve(dir) {
-  return path.join(__dirname, dir);
+  return path.join(__dirname, './', dir);
 }
 
 module.exports = {
@@ -87,6 +87,20 @@ module.exports = {
       .rule('eslint')
       .exclude.add('/Users/maybexia/Downloads/FE/community_built-in/src/lib')
       .end();
+
+    // 这里是对环境的配置，不同环境对应不同的BASE_API，以便axios的请求地址不同
+    config.plugin('define').tap(args => {
+      const argv = process.argv;
+      const mode = argv[argv.indexOf('--project-mode') + 1];
+      args[0]['process.env'].MODE = `"${mode}"`;
+      if (mode === 'dev') {
+        args[0]['process.env'].BASE_API = '"http://jsonplaceholder.typicode.com"';
+      } else {
+        args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"';
+      }
+      console.log('args = ', args);
+      return args;
+    });
 
     // svg loader
     const svgRule = config.module.rule('svg'); // 找到svg-loader

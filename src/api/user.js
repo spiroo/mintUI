@@ -2,7 +2,7 @@ import request from '../utils/axios';
 
 export function fetchList(params) {
   return request({
-    url: 'http://jsonplaceholder.typicode.com/users',
+    url: '/users',
     method: 'get',
     data: params
   });

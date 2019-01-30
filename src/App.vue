@@ -8,6 +8,32 @@
   </div>
 </template>
 
+<script>
+import { Indicator } from 'mint-ui';
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters([
+      'requestLoading'
+    ])
+  },
+  watch: {
+    requestLoading(val) {
+      if (val) {
+        Indicator.open({
+          text: '加载中...',
+          spinnerType: 'snake'
+        });
+      } else {
+        Indicator.close();
+      }
+    }
+  }
+}
+</script>
+
+
 <style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

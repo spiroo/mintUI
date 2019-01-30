@@ -7,7 +7,7 @@
 
 <script>
 import HelloWorld from '@/components/HelloWorld.vue';
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'home',
